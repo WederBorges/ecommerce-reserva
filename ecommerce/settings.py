@@ -116,7 +116,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = 'static/' #caminho estático. serve pro {% static %} resolver caminhos dps
 
 STATICFILES_DIRS = [ #Lista de diretórios estáticos
     os.path.join(BASE_DIR, 'static') #BASEDIR é o caminho do meu diretório "Ecommerce" lá em cima foi criado pelo própio jungle.                                     

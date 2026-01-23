@@ -15,15 +15,46 @@ class Cliente(models.Model): # id populado automaticamente pelo Django
 class Categoria(models.Model): # Categoria -> Feminino, Masculino, Kids, etc...
     nome = models.CharField(max_length=80, null=True, blank=True)
     
+    def __str__(self):
+        return str(self.nome)
 
 class Tipo(models.Model): # Tipo -> Camisa, Camiseta, Calça, Bermuda, Sapato, etc...    
     nome = models.CharField(max_length=80, null=True, blank=True)
 
+    def __str__(self):
+        return str(self.nome)
+    
 class Produto(models.Model): #
     imagem = models.CharField(max_length=400, null=False, blank=True) 
     nome = models.CharField(max_length=200)
     preco = models.DecimalField(max_digits=10, decimal_places=2) # decimal_places -> 1000000000,00 termina com 2 casas decimais
     ativo = models.BooleanField(default=True)
-    categoria = models.ForeignKey(Categoria, null=True, blank=True, on_delete=models.SET_NULL)
-    tipo = models.ForeignKey(Tipo, null=True, blank=True, on_delete=models.SET_NULL) # models.SET_NULL -> Se uma categoria for excluída o campo do produto fica vazio.
+    Categoria = models.ForeignKey(Categoria, null=True, blank=True, on_delete=models.SET_NULL)
+    tipo = models.ForeignKey(Tipo, null=True, blank=True, on_delete=models.SET_NULL) # models.SET_NULL -> Se uma Categoria for excluída o campo do produto fica vazio.
     
+class ItemEstoque(models.Model):
+    produto = models.ForeignKey(Produto, null=True, blank=True, on_delete=models.SET_NULL)
+    cor = models.CharField(max_length=200, null=True, blank=True)
+    tamanho = models.CharField(max_length=10, null=True, blank=True)
+    quantidade = models.IntegerField(default=0)
+
+class Endereco(models.Model):
+    cep = models.CharField(max_length=500, null=True, blank=True)
+    rua = models.CharField(max_length=500, null=True, blank=True) 
+    numero = models.CharField(max_length=10, null=True, blank=True)
+    complemento = models.CharField(max_length=200, null=True, blank=True)
+    cidade = models.CharField(max_length=100, null=True, blank=True)
+    estado = models.CharField(max_length=30, null=True, blank=True)
+    cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.SET_NULL)
+
+class Pedidos(models.Model):
+    cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.SET_NULL) #cliente ID ou Nome eu acho
+    finalizado = models.BooleanField(default=False) #Campo boleeano define se o pedido foi finalizado ou pendente
+    cod_pedido = models.CharField(max_length=200, null=True, blank=True) #codigo do pedido -> cada item tem um pedido
+    endereco = models.ForeignKey(Endereco, null=True, blank=True, on_delete=models.SET_NULL) #end cadastro associado ao cliente
+    data_finalizacao = models.DateTimeField(null=True, blank=True ) #data finalizacao do pedido
+
+class ItensPedido(models.Model):  
+    pedido = models.ForeignKey(Pedidos, null=True, blank=True, on_delete=models.SET_NULL)
+    item_estoque = models.ForeignKey(ItemEstoque, null=True, blank=True, on_delete=models.SET_NULL)
+    quantidade = models.IntegerField(default=0)
