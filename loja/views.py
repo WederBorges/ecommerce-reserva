@@ -1,12 +1,14 @@
 from django.shortcuts import render
-
+from .models import *
 # Create your views here.
 
 def homepage(request):
     return render(request,"homepage.html") #paginas do site
 
 def loja(request):
-    return render(request,"loja.html")
+    produtos = Produto.objects.all() #aqui eu pego todo objeto da classe (acho q deve fica pesado p caramba)
+    context = {"produtos": produtos}
+    return render(request,"loja.html", context)
 
 def carrinho(request):
     return render(request,"carrinho.html")
