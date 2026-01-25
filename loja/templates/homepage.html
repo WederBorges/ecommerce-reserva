@@ -5,4 +5,12 @@
 
 <h3>Homepage</h3>
 
+{% for banner in banners %}
+
+    <a href="{% url 'homepage' %}/{{ banner.link_destino }}">
+        <img src="{{ banner.imagem.url }}" alt="">
+    </a>
+
+{% endfor %}
+
 {% endblock %}

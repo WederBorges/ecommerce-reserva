@@ -61,3 +61,13 @@ class ItensPedido(models.Model):
     pedido = models.ForeignKey(Pedido, null=True, blank=True, on_delete=models.SET_NULL)
     item_estoque = models.ForeignKey(ItemEstoque, null=True, blank=True, on_delete=models.SET_NULL)
     quantidade = models.IntegerField(default=0)
+
+class Banner(models.Model):
+    imagem = models.ImageField(blank=True, null=True) 
+    link_destino = models.CharField(max_length=400, blank=True, null=True)
+    ativo = models.BooleanField(default=False)
+
+    def __str__(self):
+        status = "Ativo" if self.ativo == True else "Inativo" #Mostra ativo se True, inativo se Else.
+
+        return f"{self.link_destino} - Ativo: {status}"

@@ -121,3 +121,7 @@ STATIC_URL = 'static/' #caminho estático. serve pro {% static %} resolver camin
 STATICFILES_DIRS = [ #Lista de diretórios estáticos
     os.path.join(BASE_DIR, 'static') #BASEDIR é o caminho do meu diretório "Ecommerce" lá em cima foi criado pelo própio jungle.                                     
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/imgs')
+
+MEDIA_URL = '/imagem/'
