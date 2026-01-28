@@ -8,18 +8,31 @@ def homepage(request):
     return render(request,"homepage.html", context) #paginas do site
 
 def loja(request, nome_categoria=None):
+    print(nome_categoria)
     produtos = Produto.objects.filter(ativo=True) #aqui eu pego todo objeto da classe (acho q deve fica pesado p caramba)
+    
+    if nome_categoria:
+        produtos = produtos.filter(categoria__nome=nome_categoria) #If vem antes do context caso a regra seja aplicada
     context = {"produtos": produtos}
-    return render(request,"loja.html", context)
+
+    
+
+    return render(request, "loja.html", context)
+
+def ver_produto(request, id_produto):
+    produto = Produto.objects.get(id = id_produto) #no django toda classe tem o par ID criado automaticamente
+    print(produto) #no django toda classe tem o par ID criado automaticamente
+    context = {"produto": produto}
+    return render (request, "ver_produto.html", context)
 
 def carrinho(request):
-    return render(request,"carrinho.html")
+    return render(request, "carrinho.html")
 
 def checkout(request):
-    return render(request,"checkout.html")
+    return render(request, "checkout.html")
 
 def minha_conta(request):
-    return render(request,"usuario/minha_conta.html")
+    return render(request, "usuario/minha_conta.html")
 
 def login(request):
-    return render(request,"usuario/login.html") #estão na pasta usuario
+    return render(request, "usuario/login.html") #estão na pasta usuario

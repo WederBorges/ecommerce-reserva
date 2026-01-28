@@ -6,7 +6,11 @@
     {% for produto in produtos %}
             <p> Produto: {{ produto.nome }}</p>  
             <p> Preço:   {{ produto.preco }}</p>
-            <p> <img src="{{ produto.imagem.url }}" width="400" alt=""></p>
+            <a href="{% url 'ver_produto' produto.id %}">
+                <p> 
+                    <img src="{{ produto.imagem.url }}" width="400" alt="">
+                </p>
+            </a>
     {% endfor %}
 
 
