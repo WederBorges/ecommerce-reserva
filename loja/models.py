@@ -35,11 +35,22 @@ class Produto(models.Model): #
     def __str__(self):
         return f"{self.nome} - R$:{self.preco} - CATEGORIA: {self.categoria} - TIPO: {self.tipo} "
     
+
+class CorProduto(models.Model):
+    nome = models.CharField(max_length=200, null=True, blank=True)#nome da cor 
+    codigo = models.CharField(max_length=200, null=True, blank=True)#código hexadecimal
+
+    def __str__(self):
+        return str(self.nome) 
+
 class ItemEstoque(models.Model):
     produto = models.ForeignKey(Produto, null=True, blank=True, on_delete=models.SET_NULL)
-    cor = models.CharField(max_length=200, null=True, blank=True)
+    cor = models.ForeignKey(CorProduto, null=True, blank=True, on_delete=models.SET_NULL)
     tamanho = models.CharField(max_length=10, null=True, blank=True)
     quantidade = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"PROD: {self.produto} - COR: {self.cor} - QTD: {self.quantidade} - TAM: {self.tamanho}"
 
 class Endereco(models.Model):
     cep = models.CharField(max_length=500, null=True, blank=True)

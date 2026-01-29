@@ -21,8 +21,14 @@ def loja(request, nome_categoria=None):
 
 def ver_produto(request, id_produto):
     produto = Produto.objects.get(id = id_produto) #no django toda classe tem o par ID criado automaticamente
-    print(produto) #no django toda classe tem o par ID criado automaticamente
-    context = {"produto": produto}
+    itens_estoque = ItemEstoque.objects.filter(produto=produto, quantidade__gt=0) #Acesso a todos os parametros do objeto
+    if len(itens_estoque) > 0:
+        tem_estoque = True
+        cor = [item.cor for item in itens_estoque]
+    else:
+        tem_estoque = False
+    
+    context = {"produto": produto, "itens_estoque": itens_estoque, "tem_estoque":tem_estoque, "cores": cor}
     return render (request, "ver_produto.html", context)
 
 def carrinho(request):

@@ -4,12 +4,26 @@
 
 {% block body %}
 
+{% if tem_estoque %}
 <h3> {{produto.nome}}</h3>
+
 
 <img src="{{ produto.imagem.url }}" width="300" height="450" alt="">
 
 <h2>{{produto.nome}}</h2>
-<h2>{{produto.preco}}</h2>
+<h2>
+    
+
+{% for cor in cores %}
+    <i class="fa-solid fa-circle" style="color: {{cor.codigo}};"></i>    {{ cor.nome }}
+
+
+    
+{% endfor %}
+
 
 <button> adicionar ao carrinho </button>
+{% else %}
+Produto Indisponível
+{% endif %}
 {% endblock %}
