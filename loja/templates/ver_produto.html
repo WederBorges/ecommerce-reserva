@@ -5,25 +5,31 @@
 {% block body %}
 
 {% if tem_estoque %}
-<h3> {{produto.nome}}</h3>
+
+    <img src="{{ produto.imagem.url }}" width="300" height="450" alt="">
+
+    <h2>{{ produto.nome }}</h2>
+    <h3> {{ produto.preco }}</h3>
+
+    {% for cor in cores %}
+        <h3>
+            <a href="{% url 'ver_produto' produto.id cor.id %}">
+            <i class="fa-solid fa-circle" style="color:
+                {{cor.codigo}};">
+            </i>
+            </a>    
+            {{ cor.nome }}
+        </h3>
+                    <h4>Selecione o tamano</h4>
+            {% for tamanho in tamanhos %}
+                {{ tamanho }}
+            {% endfor % }   mexer nisso
+
+    {% endfor %}
 
 
-<img src="{{ produto.imagem.url }}" width="300" height="450" alt="">
-
-<h2>{{produto.nome}}</h2>
-<h2>
-    
-
-{% for cor in cores %}
-    <i class="fa-solid fa-circle" style="color: {{cor.codigo}};"></i>    {{ cor.nome }}
-
-
-    
-{% endfor %}
-
-
-<button> adicionar ao carrinho </button>
+    <button> adicionar ao carrinho </button>
 {% else %}
-Produto Indisponível
+    Produto Indisponível
 {% endif %}
 {% endblock %}
