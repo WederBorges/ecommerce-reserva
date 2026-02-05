@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
+
 # Create your views here.
 
 def homepage(request):
@@ -23,19 +24,19 @@ def ver_produto(request, id_produto, id_cor=None):
     tem_estoque = False
     cor = {}
     tamanho = {}
+    cor_selecionada = None
     produto = Produto.objects.get(id = id_produto) #no django toda classe tem o par ID criado automaticamente
     itens_estoque = ItemEstoque.objects.filter(produto=produto, quantidade__gt=0) #Acesso a todos os parametros do objeto
     if id_cor:
-            itens_estoque = ItemEstoque.objects.filter(produto=produto, quantidade__gt=0, cor__id = id_cor) #cada coluna tem o msm id? ou casda coluna tem um id
-            tamanho = set(item.tamanho for item in itens_estoque) 
+            itens_estoque = ItemEstoque.objects.filter(produto=produto, quantidade__gt=0, cor__id = id_cor) #quantidade_GT é do própio DJANGO.GT --> Greather Than
+            tamanho = [ item.tamanho for item in itens_estoque ]
+            cor_selecionada = CorProduto.objects.get(id = id_cor)
     if len(itens_estoque) > 0:
         tem_estoque = True
         cor = [item.cor for item in itens_estoque] # tem varias cores (azul, azul, preto, branco, branco)
         cor = set(cor) #ordena por ordem crescente numeros e não aceita duplicadas ou seja (azul, preto, branco)
-        
 
-    
-    context = {"produto": produto, "itens_estoque": itens_estoque, "tem_estoque":tem_estoque, "cores": cor, "tamanhos": tamanho}
+    context = {"produto": produto, "tem_estoque":tem_estoque, "cores": cor, "tamanhos": tamanho, "cores_selecionadas":cor_selecionada}
     return render (request, "ver_produto.html", context)
 
 def carrinho(request):
@@ -49,3 +50,20 @@ def minha_conta(request):
 
 def login(request):
     return render(request, "usuario/login.html") #estão na pasta usuario
+
+def adicionar_carrinho(request, id_produto):
+    if request.method == "POST" and id_produto:
+        dados = request.POST.dict()
+        tamanho = dados.get("tamanho")
+        cor = dados.get("cor")
+        nome_cor = CorProduto.objects.filter(id = cor).first()
+        print(nome_cor)
+        print(cor)
+        print(tamanho)
+        if not tamanho:
+            return redirect('loja')
+        return redirect("carrinho")
+    else:
+        return redirect("loja") #metodo django redirect leva em consideração NAME atribuido em urls.py
+
+    

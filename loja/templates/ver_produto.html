@@ -7,28 +7,36 @@
 {% if tem_estoque %}
 
     <img src="{{ produto.imagem.url }}" width="300" height="450" alt="">
-
     <h2>{{ produto.nome }}</h2>
     <h3> {{ produto.preco }}</h3>
 
     {% for cor in cores %}
-        <h3>
-            <a href="{% url 'ver_produto' produto.id cor.id %}">
-            <i class="fa-solid fa-circle" style="color:
-                {{cor.codigo}};">
-            </i>
-            </a>    
-            {{ cor.nome }}
-        </h3>
-                    <h4>Selecione o tamano</h4>
-            {% for tamanho in tamanhos %}
-                {{ tamanho }}
-            {% endfor % }   mexer nisso
-
+    <a href="{% url 'ver_produto' produto.id cor.id %}">
+        <i class="fa-solid fa-circle" style="color:
+                {{cor.codigo}};"></i></a>
     {% endfor %}
 
+{% if cores_selecionadas %}
 
-    <button> adicionar ao carrinho </button>
+{% for cor in cores %}
+{{ cor }}
+{% endfor %}
+
+{% endif %}
+
+<form action="{% url 'adicionar_carrinho' produto.id %}" method="post">
+{% if tamanhos %}
+    {% csrf_token %}
+    <p>Selecione o tamanho</p>
+     {% for tamanho in tamanhos %}
+     <input type="radio" name="tamanho" value="{{ tamanho }}">
+     <label for="{{ tamanho }}">{{ tamanho }}</label>     
+{% endfor %}
+    <button type="submit"> adicionar ao carrinho </button> 
+    <input type="hidden" name="cor" value=" {{ cores_selecionadas.id }}">
+</form> 
+{% endif %}  
+
 {% else %}
     Produto Indisponível
 {% endif %}

@@ -7,6 +7,7 @@ urlpatterns = [
     path('loja/<str:nome_categoria>/', loja, name="loja"),
     path('produto/<str:id_produto>/', ver_produto, name="ver_produto"),
     path('produto/<str:id_produto>/<int:id_cor>/', ver_produto, name="ver_produto"),
+    path('adicionarcarrinho/<str:id_produto>', adicionar_carrinho, name="adicionar_carrinho"),
     path('minhaconta/', minha_conta, name="minha_conta"),
     path('carrinho/', carrinho, name="carrinho"),
     path('login/', login, name="login"), 
