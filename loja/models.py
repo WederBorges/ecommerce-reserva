@@ -9,6 +9,9 @@ class Cliente(models.Model): # id populado automaticamente pelo Django
     telefone = models.CharField(max_length=80, null=True, blank=True)
     id_sessao = models.CharField(max_length=80, null=True, blank=True)
     usuario = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE) 
+
+    def __str__(self):
+        return str(self)
 ### Obs null=True -> banco aceita vazio ---- blank=True -> Formulário aceita em branco.
 
 
@@ -67,11 +70,16 @@ class Pedido(models.Model):
     cod_pedido = models.CharField(max_length=200, null=True, blank=True) #codigo do pedido -> cada item tem um pedido
     endereco = models.ForeignKey(Endereco, null=True, blank=True, on_delete=models.SET_NULL) #end cadastro associado ao cliente
     data_finalizacao = models.DateTimeField(null=True, blank=True ) #data finalizacao do pedido
+    class Meta:
+        db_table = "loja_pedidos"
 
 class ItensPedido(models.Model):  
     pedido = models.ForeignKey(Pedido, null=True, blank=True, on_delete=models.SET_NULL)
     item_estoque = models.ForeignKey(ItemEstoque, null=True, blank=True, on_delete=models.SET_NULL)
     quantidade = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"id: {self.pedido.id} - Produto: {self.item_estoque.produto} - Cor: {self.item_estoque.cor} - Tamanho: {self.item_estoque.tamanho}"
 
 class Banner(models.Model):
     imagem = models.ImageField(blank=True, null=True) 

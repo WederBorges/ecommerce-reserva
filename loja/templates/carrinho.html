@@ -5,5 +5,21 @@
 
 <h3>carrinho</h3>
 
+<h4>ID Pedido: {{ pedido.id }}</h4>
+
+<p>
+    {% for i in itens_pedido %}
+
+        <h4>
+            <img src="{{ i.item_estoque.produto.imagem.url }}" width="60" alt=""> 
+            Produto: {{ i.item_estoque.produto.nome }} 
+            Cor: {{ i.item_estoque.cor}} 
+            Tamanho: {{ i.item_estoque.qamanho }}
+            Quantidade: {{ i.quantidade}} 
+        </h4>
+
+    {% endfor %}
+</p>
+
 <a href="{% url 'checkout' %}">checkout</a>
 {% endblock %}
