@@ -1,10 +1,15 @@
+from django.db.models import ObjectDoesNotExist
 from .models import ItensPedido, Pedido
 def carrinho(request):
     quantidade_adicionada_carrinho = 0
-    if request.user.is_authenticated: #verifica se user está logado
+
+    if not request.user.is_authenticated:
+        return {"quantidade_adicionada_carrinho":quantidade_adicionada_carrinho}
+
+    try: #verifica se user está logado
         cliente = request.user.cliente
         print(cliente.nome) #pegando dados do cliente atraves da classe Clientes e acessando pelo USER do usuario no request da pagina
-    else:
+    except ObjectDoesNotExist:
        return {"quantidade_adicionada_carrinho": quantidade_adicionada_carrinho}
     
     pedido, criado = Pedido.objects.get_or_create(cliente=cliente, finalizado=False)

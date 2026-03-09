@@ -11,7 +11,7 @@ class Cliente(models.Model): # id populado automaticamente pelo Django
     usuario = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE) 
 
     def __str__(self):
-        return str(self)
+        return self.nome or ""
 ### Obs null=True -> banco aceita vazio ---- blank=True -> Formulário aceita em branco.
 
 
@@ -70,8 +70,7 @@ class Pedido(models.Model):
     cod_pedido = models.CharField(max_length=200, null=True, blank=True) #codigo do pedido -> cada item tem um pedido
     endereco = models.ForeignKey(Endereco, null=True, blank=True, on_delete=models.SET_NULL) #end cadastro associado ao cliente
     data_finalizacao = models.DateTimeField(null=True, blank=True ) #data finalizacao do pedido
-    class Meta:
-        db_table = "loja_pedidos"
+
 
 class ItensPedido(models.Model):  
     pedido = models.ForeignKey(Pedido, null=True, blank=True, on_delete=models.SET_NULL)

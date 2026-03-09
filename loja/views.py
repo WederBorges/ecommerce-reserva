@@ -42,6 +42,7 @@ def ver_produto(request, id_produto, id_cor=None):
 def carrinho(request):
     if request.user.is_authenticated:
         cliente = request.user.cliente
+    else: {"quantidade_adicionada_carrinho": 0}
 
     pedido, criado = Pedido.objects.get_or_create(cliente=cliente, finalizado=False)
     itens_pedido = ItensPedido.objects.filter(pedido=pedido)
